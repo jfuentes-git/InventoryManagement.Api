@@ -153,6 +153,7 @@ Utilizar los datos de autenticación al dar click en el Boton Authorize:
 
 -Datos de prueba en el archivo .env.example (AUTH_USERNAME y AUTH_PASSWORD)
 
+
 ---
 
 # Ejecutar Pruebas Unitarias
@@ -232,6 +233,7 @@ http://localhost:5000/swagger
 Utilizar los datos de autenticación al dar click en el Boton Authorize:
 
 -Datos de prueba en el archivo .env.example (AUTH_USERNAME y AUTH_PASSWORD)
+
 
 ---
 
