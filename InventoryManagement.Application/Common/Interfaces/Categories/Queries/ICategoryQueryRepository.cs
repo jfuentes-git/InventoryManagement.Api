@@ -7,6 +7,6 @@ namespace InventoryManagement.Application.Common.Interfaces.Categories.Queries
     {
         Task<List<Category>> GetAllAsync(CancellationToken cancellationToken);
         Task<Category?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-        Task<bool> ExistsByCategoryNameAsync(CreateCategoryCommand Category, CancellationToken cancellationToken);
+        Task<bool> ExistsByCategoryNameAsync(string Name, CancellationToken cancellationToken);
     }
 }

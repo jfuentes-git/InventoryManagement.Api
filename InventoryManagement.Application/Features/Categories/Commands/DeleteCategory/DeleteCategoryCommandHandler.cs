@@ -28,16 +28,12 @@ namespace InventoryManagement.Application.Features.Categories.Commands.DeleteCat
             var hasProducts = await _productQueryRepository.ExistsByCategoryIdAsync(request.Id, cancellationToken);
 
             if (hasProducts)
-            {
                 throw new BusinessException("La categoria no puede ser eliminada por que ya se encuentra asignada a otro producto.");
-            }
 
             var deleted = await _repository.DeleteAsync( request.Id, cancellationToken);
 
             if (!deleted)   
-            {
                 throw new NotFoundException("Categoria no encontrada.");
-            }
 
             return new OperationResult(true, "La categoria fue borrada satisfactoriamente.");
         }

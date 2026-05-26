@@ -22,9 +22,7 @@ namespace InventoryManagement.Application.Features.FeaturesCatalog.Command.Delet
 
         public async Task<OperationResult> Handle(DeleteProductCommand request,CancellationToken cancellationToken)
         {
-            var deleted = await _repository.DeleteAsync(
-                request.Id,
-                cancellationToken);
+            var deleted = await _repository.DeleteAsync(request.Id, cancellationToken);
 
             return deleted ? 
                         new OperationResult(true,"Producto eliminado exitosamente")

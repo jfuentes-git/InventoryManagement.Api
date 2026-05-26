@@ -20,9 +20,7 @@ namespace InventoryManagement.Application.Features.Product.Queries.GetProductByI
 
         public async Task<ProductDetailResponse> Handle( GetProductByIdQuery request,CancellationToken cancellationToken)
         {
-            var product = await _repository.GetByIdAsync(
-                request.Id,
-                cancellationToken);
+            var product = await _repository.GetByIdAsync( request.Id, cancellationToken);
 
             if (product is null)
             {

@@ -13,7 +13,6 @@ namespace InventoryManagement.Application.Features.FeaturesCatalog.Command.Updat
        Guid Id,
        string Name,
        decimal Price,
-       Guid CategoryId,
-       bool IsActive
+       Guid CategoryId
    ) : IRequest<OperationResult>;
 }

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+﻿    using FluentAssertions;
 using InventoryManagement.Application.Common.Interfaces.Categories.Command;
 using InventoryManagement.Application.Common.Interfaces.Categories.Queries;
 using InventoryManagement.Application.Features.Categories.Commands.CreateCategory;
@@ -16,7 +16,7 @@ public class CreateCategoryCommandHandlerSuccessTests
 
         queryRepo
             .Setup(x => x.ExistsByCategoryNameAsync(
-                It.IsAny<CreateCategoryCommand>(),
+                It.IsAny<string>(),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(false);
 

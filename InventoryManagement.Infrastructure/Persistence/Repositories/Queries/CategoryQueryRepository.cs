@@ -25,18 +25,19 @@ namespace InventoryManagement.Infrastructure.Persistence.Repositories.Queries
         {
             return await _context.Categories
                 .AsNoTracking()
+                .Where(c => c.IsActive)
                 .OrderBy(x => x.Name)
                 .ToListAsync(cancellationToken);
         }
 
         public async Task<Category?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await _context.Categories .AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            return await _context.Categories .AsNoTracking().FirstOrDefaultAsync(x => x.Id == id && x.IsActive, cancellationToken);
         }
 
-        public async Task<bool> ExistsByCategoryNameAsync(CreateCategoryCommand Category, CancellationToken cancellationToken)
+        public async Task<bool> ExistsByCategoryNameAsync(string name, CancellationToken cancellationToken)
         {
-            return await _context.Categories.AsNoTracking().AnyAsync(x => x.Name.Equals(Category.Name), cancellationToken);
+            return await _context.Categories.AsNoTracking().AnyAsync(x => x.Name.Equals(name), cancellationToken);
         }
 
     }

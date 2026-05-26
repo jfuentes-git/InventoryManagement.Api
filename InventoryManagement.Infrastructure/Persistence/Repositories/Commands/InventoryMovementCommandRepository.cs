@@ -26,55 +26,18 @@ namespace Persistence.Repositories.Commands
             {
                 await ((dynamic)_connection).OpenAsync(cancellationToken);
             }
+
             using var transaction = _connection.BeginTransaction();
             try
             {
-                const string updateStockSql = """
-                UPDATE Products
-                SET Stock = @Stock
-                WHERE Id = @ProductId
-                """;
-                var updateCommand = new CommandDefinition(
-                    updateStockSql,
-                    new
-                    {
-                        ProductId = inventoryMovement.ProductId,
-                        Stock = newStock
-                    },
-                    transaction: transaction,
+                const string updateStockSql = " UPDATE Products SET Stock = @Stock WHERE Id = @ProductId ";
+                var updateCommand = new CommandDefinition(updateStockSql,
+                              new { ProductId = inventoryMovement.ProductId, Stock = newStock }, transaction: transaction,
                     cancellationToken: cancellationToken);
 
                 await _connection.ExecuteAsync(updateCommand);
 
-                const string insertMovementSql = """
-                INSERT INTO InventoryMovements
-                (
-                    Id,
-                    ProductId,
-                    MovementType,
-                    Quantity,
-                    CreatedAt
-                )
-                VALUES
-                (
-                    @Id,
-                    @ProductId,
-                    @MovementType,
-                    @Quantity,
-                    @CreatedAt
-                )
-                """;
-
-                var insertCommand = new CommandDefinition(
-                    insertMovementSql,
-                    inventoryMovement,
-                    transaction: transaction,
-                    cancellationToken: cancellationToken);
-
-                await _connection.ExecuteAsync(insertCommand);
-                transaction.Commit();
-
-                return inventoryMovement.Id;
+                return await InsertMovementSQL(inventoryMovement, transaction, cancellationToken);
             }
             catch
             {
@@ -82,6 +45,37 @@ namespace Persistence.Repositories.Commands
                 throw;
             }
         }
+
+        private async Task<Guid> InsertMovementSQL(InventoryMovement inventoryMovement,
+                                                                   IDbTransaction transaction, CancellationToken cancellationToken)
+        {
+            try
+            {
+                using (transaction)
+            {
+                const string insertMovementSql = """
+                INSERT INTO InventoryMovements (Id,ProductId, MovementType, Quantity, CreatedAt )
+                VALUES (@Id, @ProductId, @MovementType, @Quantity, @CreatedAt)
+                """;
+
+                var insertCommand = new CommandDefinition(insertMovementSql,inventoryMovement,transaction: transaction, cancellationToken: cancellationToken);
+
+                await _connection.ExecuteAsync(insertCommand);
+                transaction.Commit();
+
+                return inventoryMovement.Id;
+
+            }
+
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
+
+        }
+
     }
 }
 

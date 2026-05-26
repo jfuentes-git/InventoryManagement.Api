@@ -17,7 +17,7 @@ namespace InventoryManagement.Application.Features.Categories.Queries.GetAllCate
             _repository = repository;
         }
 
-        public async Task<List<CategoryResponse>> Handle( GetAllCategoriesQuery request, CancellationToken cancellationToken)
+        public async Task<List<CategoryResponse>> Handle(GetAllCategoriesQuery request, CancellationToken cancellationToken)
         {
             var categories = await _repository.GetAllAsync(cancellationToken);
 

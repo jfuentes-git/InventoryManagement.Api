@@ -108,8 +108,8 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateInventoryMovementComm
 
 builder.Services.AddScoped<IInventoryStockCalculator, InventoryStockCalculator>();
 
-builder.Services.AddScoped<IProductQueryRepository, ProductQueryRepository>();
-builder.Services.AddScoped<ICategoryQueryRepository, CategoryQueryRepository>();
+builder.Services.AddScoped<Common.Interfaces.Products.Query.IProductQueryRepository, ProductQueryRepository>();
+builder.Services.AddScoped<InventoryManagement.Application.Common.Interfaces.Categories.Queries.ICategoryQueryRepository, CategoryQueryRepository>();
 builder.Services.AddScoped<IInventoryMovementQueryRepository, InventoryMovementQueryRepository>();
 
 builder.Services.AddScoped<IProductCommandRepository, ProductCommandRepository>();

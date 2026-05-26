@@ -31,7 +31,7 @@ namespace InventoryManagement.UnitTests.Products.Command.Create
 
             productQueryMock
                 .Setup(x => x.ExistsByProductNameAsync(
-                    It.IsAny<CreateProductCommand>(),
+                    It.IsAny<string>(),
                     It.IsAny<CancellationToken>()))
                 .ReturnsAsync(false);
 

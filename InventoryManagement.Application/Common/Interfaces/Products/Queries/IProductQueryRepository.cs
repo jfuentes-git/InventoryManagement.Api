@@ -10,6 +10,6 @@ namespace Common.Interfaces.Products.Query
         Task<List<Product>> GetAllAsync(CancellationToken cancellationToken);
         Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
         Task<bool> ExistsByCategoryIdAsync(Guid categoryId, CancellationToken cancellationToken);
-        Task<bool> ExistsByProductNameAsync(CreateProductCommand Product, CancellationToken cancellationToken);
+        Task<bool> ExistsByProductNameAsync(string Name, CancellationToken cancellationToken);
     }
 }

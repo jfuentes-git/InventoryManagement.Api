@@ -21,22 +21,22 @@ namespace InventoryManagement.Infrastructure.Persistence.Repositories.Queries
 
         public async Task<List<Product>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _context.Products.AsNoTracking().ToListAsync(cancellationToken);
+            return await _context.Products.AsNoTracking().Where(x=>x.IsActive).ToListAsync(cancellationToken);
         }
 
         public async Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            return await _context.Products.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id , cancellationToken);
+            return await _context.Products.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id && x.IsActive, cancellationToken);
         }
 
         public async Task<bool> ExistsByCategoryIdAsync(Guid categoryId,CancellationToken cancellationToken)
         {
-                 return await _context.Products.AsNoTracking().AnyAsync(x => x.CategoryId == categoryId, cancellationToken);
+                 return await _context.Products.AsNoTracking().AnyAsync(x => x.CategoryId == categoryId && x.IsActive, cancellationToken);
         }
 
-        public async Task<bool> ExistsByProductNameAsync(CreateProductCommand Product, CancellationToken cancellationToken)
+        public async Task<bool> ExistsByProductNameAsync(string name, CancellationToken cancellationToken)
         {
-            return await _context.Products.AsNoTracking().AnyAsync(x => x.Name.Equals(Product.Name), cancellationToken);
+            return await _context.Products.AsNoTracking().AnyAsync(x => x.Name.Equals(name), cancellationToken);
         }
 
     }

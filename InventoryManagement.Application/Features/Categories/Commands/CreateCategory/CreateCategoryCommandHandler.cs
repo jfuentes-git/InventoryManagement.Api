@@ -26,19 +26,12 @@ namespace InventoryManagement.Application.Features.Categories.Commands.CreateCat
         public async Task<CreatedResponse> Handle(CreateCategoryCommand request,CancellationToken cancellationToken)
         {
 
-            var existsCategoryName = await _categoryQueryRepository.ExistsByCategoryNameAsync(request, cancellationToken);
+            var existsCategoryName = await _categoryQueryRepository.ExistsByCategoryNameAsync(request.Name, cancellationToken);
 
             if (existsCategoryName)
-            {
                 throw new ConflictException("Ya existe una categoria con ese nombre.");
-            }
 
-            var category = new Category
-            {
-                Id = Guid.NewGuid(),
-                Name = request.Name,
-                IsActive = true
-            };
+            var category = new Category { Id = Guid.NewGuid(), Name = request.Name,IsActive = true};
 
             var id = await _repository.CreateAsync(category,cancellationToken);
 

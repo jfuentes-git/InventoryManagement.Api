@@ -22,7 +22,7 @@ namespace InventoryManagement.UnitTests.Categories.Command.Create
             var queryRepo = new Mock<ICategoryQueryRepository>();
 
             queryRepo
-                .Setup(x => x.ExistsByCategoryNameAsync(It.IsAny<CreateCategoryCommand>(), It.IsAny<CancellationToken>()))
+                .Setup(x => x.ExistsByCategoryNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(true);
 
             var handler = new CreateCategoryCommandHandler(commandRepo.Object, queryRepo.Object);

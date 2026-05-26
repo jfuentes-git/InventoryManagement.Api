@@ -1,4 +1,5 @@
-﻿using InventoryManagement.Application.Common.Interfaces.Categories.Command;
+﻿using InventoryManagement.Application.Common.Exceptions;
+using InventoryManagement.Application.Common.Interfaces.Categories.Command;
 using InventoryManagement.Application.Common.Interfaces.Categories.Queries;
 using InventoryManagement.Application.Features.Categories.Commands.UpdateCategory;
 using InventoryManagement.Domain.Entities;
@@ -7,28 +8,18 @@ using Xunit;
 
 namespace InventoryManagement.UnitTests.Categories.Command.Update
 {
-    public class UpdateCategoryCommandHandlerSuccessTests
+    public class UpdateCategoryCommandHandlerNotFoundByQueryTest
     {
         [Fact]
-        public async Task Handle_ShouldReturnSuccess_WhenCategoryIsUpdated()
+        public async Task Handle_ShouldThrowNotFoundException_WhenCategoryDoesNotExist()
         {
             var repositoryMock = new Mock<ICategoryCommandRepository>();
             var repositoryQueryMock = new Mock<ICategoryQueryRepository>();
 
             var categoryId = Guid.NewGuid();
-            repositoryQueryMock
-                .Setup(x => x.GetByIdAsync(categoryId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new Category
-                {
-                    Id = categoryId,
-                    Name = "Old Name"
-                });
 
-            repositoryMock
-                .Setup(x => x.UpdateAsync(
-                    It.IsAny<Category>(),
-                    It.IsAny<CancellationToken>()))
-                .ReturnsAsync(true);
+            repositoryQueryMock.Setup(x => x.GetByIdAsync(categoryId, It.IsAny<CancellationToken>()))
+                .ReturnsAsync((Category?)null);
 
             var handler = new UpdateCategoryCommandHandler(
                 repositoryMock.Object,
@@ -38,14 +29,12 @@ namespace InventoryManagement.UnitTests.Categories.Command.Update
                 categoryId,
                 "Electronics");
 
-            var result = await handler.Handle(command, CancellationToken.None);
-
-            Assert.NotNull(result);
-            Assert.True(result.Success);
+            await Assert.ThrowsAsync<NotFoundException>(
+                () => handler.Handle(command, CancellationToken.None));
 
             repositoryMock.Verify(
                 x => x.UpdateAsync(It.IsAny<Category>(), It.IsAny<CancellationToken>()),
-                Times.Once);
+                Times.Never);
         }
     }
 }

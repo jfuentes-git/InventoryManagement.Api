@@ -8,5 +8,8 @@ using System.Threading.Tasks;
 
 namespace InventoryManagement.Application.Features.Categories.Commands.UpdateCategory
 {
-    public sealed record UpdateCategoryCommand(Guid Id,string Name,bool IsActive) : IRequest<OperationResult>;
+    public sealed record UpdateCategoryCommand(
+                   Guid Id,
+                   string Name
+        ) : IRequest<OperationResult>;
 }

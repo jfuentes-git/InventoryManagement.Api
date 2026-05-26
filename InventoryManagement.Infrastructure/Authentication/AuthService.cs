@@ -21,14 +21,8 @@ namespace InventoryManagement.Infrastructure.Authentication
 
         public Task<bool> ValidateCredentials(UsuarioDTO Usuario)
         {
-
-            if (_authSettings.UserName != Usuario.UsserName && _authSettings.Password != Usuario.Password)
-            {
-                return Task.FromResult(false);
-            }
-
-            return Task.FromResult(true);
-
+            return Task.FromResult(_authSettings.UserName == Usuario.UsserName
+                                  &&_authSettings.Password == Usuario.Password);
         }
     }
 }

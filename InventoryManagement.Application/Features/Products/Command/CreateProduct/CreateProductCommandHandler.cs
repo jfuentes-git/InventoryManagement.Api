@@ -30,7 +30,7 @@ namespace InventoryManagement.Application.Features.FeaturesCatalog.Command.Creat
                 throw new NotFoundException("La categoria no existe.");
             }
 
-            var existsProductName = await _productQueryRepository.ExistsByProductNameAsync(request, cancellationToken);
+            var existsProductName = await _productQueryRepository.ExistsByProductNameAsync(request.Name, cancellationToken);
 
             if (existsProductName)
             {
