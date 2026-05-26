@@ -1,0 +1,44 @@
+﻿services:
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver-inventory
+
+    environment:
+      SA_PASSWORD: "Inventory123.@TpX"
+      ACCEPT_EULA: "Y"
+
+    ports:
+      - "1433:1433"
+
+    volumes:
+      - sql_data:/var/opt/mssql
+
+  api:
+    build:
+      context: .
+      dockerfile: InventoryManagement.Api/Dockerfile
+
+    container_name: inventory-api
+
+    depends_on:
+      - sqlserver
+
+    ports:
+      - "5000:8080"
+
+    environment:
+      ASPNETCORE_URLS: "http://+:8080"
+
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=InventarioDB;User Id=sa;Password=Inventory123.@TpX;TrustServerCertificate=True"
+
+      JwtSettings__Key: "InventoryManagementSuperSecretKey2026"
+      JwtSettings__Issuer: "InventoryManagement.Api"
+      JwtSettings__Audience: "InventoryManagement.Client"
+      JwtSettings__ExpirationMinutes: "60"
+
+      AuthSettings__UserName: "admin"
+      AuthSettings__Password: "Admin123*"
+
+volumes:
+  sql_data:
