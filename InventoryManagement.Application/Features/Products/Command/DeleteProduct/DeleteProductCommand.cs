@@ -1,12 +1,8 @@
-﻿using InventoryManagement.Application.Common.Models;
+﻿
+using InventoryManagement.Application.Common.Models;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace InventoryManagement.Application.Features.FeaturesCatalog.Command.DeleteProduct
+namespace InventoryManagement.Application.Features.Products.Command.DeleteProduct
 {
     public sealed record DeleteProductCommand
     (

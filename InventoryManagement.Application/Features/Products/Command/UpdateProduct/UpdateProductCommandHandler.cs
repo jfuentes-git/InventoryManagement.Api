@@ -1,9 +1,10 @@
-﻿using Common.Interfaces.Products.Command;
-using Common.Interfaces.Products.Query;
+﻿
 using InventoryManagement.Application.Common.Exceptions;
 using InventoryManagement.Application.Common.Interfaces.Categories.Queries;
+using InventoryManagement.Application.Common.Interfaces.Products.Command;
+using InventoryManagement.Application.Common.Interfaces.Products.Queries;
 using InventoryManagement.Application.Common.Models;
-using InventoryManagement.Application.Features.FeaturesCatalog.Command.UpdateProduct;
+using InventoryManagement.Domain.Entities;
 using MediatR;
 
 namespace InventoryManagement.Application.Features.Products.Command.UpdateProduct
@@ -38,20 +39,15 @@ namespace InventoryManagement.Application.Features.Products.Command.UpdateProduc
             if (category is null)
                 throw new NotFoundException("La categoria no existe.");
 
-            var existsProductName = await _productQueryRepository.ExistsByProductNameAsync(request.Name, cancellationToken);
-
-            if (existsProductName)
-                throw new ConflictException("Ya existe un producto con ese nombre.");
-
-            var productUpdate = new InventoryManagement.Domain.Entities.Product
+            var productUpdate = new Product
             {
                 Id = request.Id,Name = request.Name, Price = request.Price, CategoryId = request.CategoryId,
             };
 
             var updated = await _repository.UpdateAsync(productUpdate,cancellationToken);
 
-            return updated? new OperationResult(true, "Product updated successfully")
-: throw new NotFoundException("Product not found");
+            return updated ? new OperationResult(true, "Producto actualizado correctamente."):
+                       throw new NotFoundException("Producto no existente.");
         }
     }
 }

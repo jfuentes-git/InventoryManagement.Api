@@ -1,5 +1,8 @@
-﻿using InventoryManagement.Application.Common.Interfaces.Authentication;
+﻿
+using InventoryManagement.Application.Common.Authentication;
+using InventoryManagement.Application.Common.Interfaces.Authentication;
 using InventoryManagement.Application.Common.Settings;
+using InventoryManagement.Domain.Entities;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -17,24 +20,31 @@ namespace InventoryManagement.Infrastructure.Authentication
         {
             _settings = settings.Value;
         }
-
-        public string GenerateToken(string username)
+        public Task<AuthResponse> GenerateToken(User Usuario)
         {
-            var claims = new List<Claim>{ new(ClaimTypes.Name, username) };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Key));
+                var claims = new List<Claim>
+            {
+                 new(ClaimTypes.Name, Usuario.UserName),
+                 new(ClaimTypes.NameIdentifier, Usuario.Id.ToString())
+            };
 
-            var credentials = new SigningCredentials(key,SecurityAlgorithms.HmacSha256);
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Key));
+                var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                var expiration = DateTime.UtcNow.AddMinutes(_settings.ExpirationMinutes);
 
-            var token =
-                new JwtSecurityToken(
-                    issuer: _settings.Issuer,
-                    audience: _settings.Audience,
-                    claims: claims,
-                    expires: DateTime.UtcNow.AddMinutes(_settings.ExpirationMinutes),
-                    signingCredentials: credentials);
+                var tokenSecurity = new JwtSecurityToken
+                        (
+                        issuer: _settings.Issuer,
+                        audience: _settings.Audience,
+                        claims: claims,
+                        expires: expiration,
+                        signingCredentials: credentials
+                        );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+                var token = new JwtSecurityTokenHandler().WriteToken(tokenSecurity);
+
+                return Task.FromResult(new AuthResponse(token, expiration));
         }
     }
 

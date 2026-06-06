@@ -1,4 +1,4 @@
-﻿using InventoryManagement.Application.Features.Categories.Commands.CreateCategory;
+﻿
 using InventoryManagement.Domain.Entities;
 
 namespace InventoryManagement.Application.Common.Interfaces.Categories.Queries
@@ -7,6 +7,6 @@ namespace InventoryManagement.Application.Common.Interfaces.Categories.Queries
     {
         Task<List<Category>> GetAllAsync(CancellationToken cancellationToken);
         Task<Category?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-        Task<bool> ExistsByCategoryNameAsync(string Name, CancellationToken cancellationToken);
+        Task<bool> ExistsByCategoryNameAsync(Category category, CancellationToken cancellationToken);
     }
 }

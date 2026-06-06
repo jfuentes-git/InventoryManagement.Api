@@ -1,10 +1,5 @@
-﻿using FluentValidation;
-using InventoryManagement.Application.Features.FeaturesCatalog.Command.UpdateProduct;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using FluentValidation;
 
 namespace InventoryManagement.Application.Features.Products.Command.UpdateProduct
 {

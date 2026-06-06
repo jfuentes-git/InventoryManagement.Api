@@ -1,4 +1,6 @@
-﻿using InventoryManagement.Application.Features.InventoryMovements.Command;
+﻿
+using InventoryManagement.Application.Common.Models;
+using InventoryManagement.Application.Features.InventoryMovements.Command.Create;
 using InventoryManagement.Application.Features.InventoryMovements.Queries.GetAllInventoryMovements;
 using InventoryManagement.Application.Features.InventoryMovements.Queries.GetInventoryMovementByProductId;
 using MediatR;
@@ -75,7 +77,7 @@ public sealed class InventoryMovementsController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] CreateInventoryMovementCommand command,CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(command, cancellationToken);

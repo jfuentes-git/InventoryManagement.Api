@@ -1,28 +1,15 @@
-﻿using InventoryManagement.Application.Common.Interfaces.Authentication;
-using InventoryManagement.Application.Common.Settings;
-using InventoryManagement.Application.Features.Authentication.DTO;
-using Microsoft.Extensions.Options;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using InventoryManagement.Application.Common.Interfaces.Authentication;
+using InventoryManagement.Domain.Entities;
+
 
 namespace InventoryManagement.Infrastructure.Authentication
 {
     public sealed class AuthService : IAuthService
     {
-        private readonly AuthSettings _authSettings;
-
-        public AuthService(IOptions<AuthSettings> authSettings)
+        public Task<bool> ValidateCredentials(User storedUser, string inputPassword)
         {
-            _authSettings = authSettings.Value;
-        }
-
-        public Task<bool> ValidateCredentials(UsuarioDTO Usuario)
-        {
-            return Task.FromResult(_authSettings.UserName == Usuario.UsserName
-                                  &&_authSettings.Password == Usuario.Password);
+            return Task.FromResult(storedUser.Password == inputPassword);
         }
     }
 }

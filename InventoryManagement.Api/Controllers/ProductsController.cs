@@ -1,8 +1,9 @@
-﻿using InventoryManagement.Application.Features.FeaturesCatalog.Command.CreateProduct;
-using InventoryManagement.Application.Features.FeaturesCatalog.Command.DeleteProduct;
-using InventoryManagement.Application.Features.FeaturesCatalog.Command.UpdateProduct;
-using InventoryManagement.Application.Features.Product.Queries.GetProductById;
-using InventoryManagement.Application.Features.Product.Queries.GetProducts;
+﻿using InventoryManagement.Application.Common.Models;
+using InventoryManagement.Application.Features.Products.Command.CreateProduct;
+using InventoryManagement.Application.Features.Products.Command.DeleteProduct;
+using InventoryManagement.Application.Features.Products.Command.UpdateProduct;
+using InventoryManagement.Application.Features.Products.Queries.GetAllProducts;
+using InventoryManagement.Application.Features.Products.Queries.GetProductById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ namespace InventoryManagement.API.Controllers;
 public sealed class ProductsController : ControllerBase
 {
     private readonly IMediator _mediator;
+
 
     public ProductsController(IMediator mediator)
     {
@@ -61,7 +63,7 @@ public sealed class ProductsController : ControllerBase
     /// </remarks>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>),StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Create(
         [FromBody] CreateProductCommand command,CancellationToken cancellationToken)
@@ -80,7 +82,7 @@ public sealed class ProductsController : ControllerBase
     /// </remarks>
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(
         [FromBody] UpdateProductCommand command, CancellationToken cancellationToken)
@@ -102,6 +104,7 @@ public sealed class ProductsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
     {
+
         await _mediator.Send(new DeleteProductCommand(id), cancellationToken);
         return NoContent();
     }

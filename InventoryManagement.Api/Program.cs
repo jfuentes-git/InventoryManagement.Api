@@ -1,27 +1,34 @@
-using Common.Interfaces.Products.Command;
-using Common.Interfaces.Products.Query;
+
 using FluentValidation;
 using InventoryManagement.Api.Middlewares;
-using InventoryManagement.Application.Common.Behaviors;
+using InventoryManagement.Application.Common.Behavior;
 using InventoryManagement.Application.Common.Interfaces.Authentication;
 using InventoryManagement.Application.Common.Interfaces.Categories.Command;
 using InventoryManagement.Application.Common.Interfaces.Categories.Queries;
 using InventoryManagement.Application.Common.Interfaces.InventoryMovements.Command;
 using InventoryManagement.Application.Common.Interfaces.InventoryMovements.Queries;
-using InventoryManagement.Application.Common.Services;
+using InventoryManagement.Application.Common.Interfaces.Products.Command;
+using InventoryManagement.Application.Common.Interfaces.Products.Queries;
+using InventoryManagement.Application.Common.Interfaces.UnitOfWork;
 using InventoryManagement.Application.Common.Settings;
-using InventoryManagement.Application.Features.InventoryMovements.Command;
+using InventoryManagement.Application.Features.InventoryMovements.Command.Create;
 using InventoryManagement.Infrastructure.Authentication;
 using InventoryManagement.Infrastructure.Persistence;
-using InventoryManagement.Infrastructure.Persistence.Repositories.Queries;
+using InventoryManagement.Infrastructure.Persistence.Repositories.Categories.Command;
+using InventoryManagement.Infrastructure.Persistence.Repositories.Categories.Queries;
+using InventoryManagement.Infrastructure.Persistence.Repositories.InventoryMovements.Command;
+using InventoryManagement.Infrastructure.Persistence.Repositories.InventoryMovements.Queries;
+using InventoryManagement.Infrastructure.Persistence.Repositories.Products.Command;
+using InventoryManagement.Infrastructure.Persistence.Repositories.Products.Queries;
+using InventoryManagement.Infrastructure.Persistence.UnitOfWork;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Persistence.Repositories.Commands;
 using System.Data;
+using System.Data.Common;
 using System.Reflection;
 using System.Text;
 
@@ -77,8 +84,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<InventoryDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddScoped<IDbConnection>(_ =>
-    new SqlConnection(connectionString));
+builder.Services.AddScoped<DbConnection>(_ => new SqlConnection(connectionString));
 
 builder.Services.AddMediatR(cfg =>
 {
@@ -92,24 +98,22 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
     options.InvalidModelStateResponseFactory = context =>
     {
         var errors = context.ModelState
-         .Where(x => x.Value?.Errors.Count > 0).ToDictionary(
+            .Where(x => x.Value?.Errors.Count > 0).ToDictionary(
              kvp => kvp.Key,
-             kvp => kvp.Value?.Errors.Select(e => "Formato inválido").ToArray()
+             kvp => kvp.Value?.Errors.Select(e => e.ErrorMessage).ToArray()
          );
 
         return new BadRequestObjectResult(new
         {
-            title = "Validation error",
+            title = "Error de validación.",
             errors
         });
     };
 });
 builder.Services.AddValidatorsFromAssemblyContaining<CreateInventoryMovementCommand>();
 
-builder.Services.AddScoped<IInventoryStockCalculator, InventoryStockCalculator>();
-
-builder.Services.AddScoped<Common.Interfaces.Products.Query.IProductQueryRepository, ProductQueryRepository>();
-builder.Services.AddScoped<InventoryManagement.Application.Common.Interfaces.Categories.Queries.ICategoryQueryRepository, CategoryQueryRepository>();
+builder.Services.AddScoped<IProductQueryRepository, ProductQueryRepository>();
+builder.Services.AddScoped<ICategoryQueryRepository, CategoryQueryRepository>();
 builder.Services.AddScoped<IInventoryMovementQueryRepository, InventoryMovementQueryRepository>();
 
 builder.Services.AddScoped<IProductCommandRepository, ProductCommandRepository>();
@@ -118,6 +122,8 @@ builder.Services.AddScoped<IInventoryMovementCommandRepository, InventoryMovemen
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSettings>()
                    ?? throw new InvalidOperationException("JwtSettings no está configurado");

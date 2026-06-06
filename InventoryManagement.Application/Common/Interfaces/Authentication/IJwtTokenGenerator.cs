@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using InventoryManagement.Application.Common.Authentication;
+using InventoryManagement.Domain.Entities;
+
 
 namespace InventoryManagement.Application.Common.Interfaces.Authentication
 {
     public interface IJwtTokenGenerator
     {
-        string GenerateToken(string username);
-
+        Task<AuthResponse> GenerateToken(User Usuario);
     }
 }

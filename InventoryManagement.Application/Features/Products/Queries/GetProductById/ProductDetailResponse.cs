@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace InventoryManagement.Application.Features.Product.Queries.GetProductById
+namespace InventoryManagement.Application.Features.Products.Queries.GetProductById
 {
     /// <summary>
     /// Product detail response.

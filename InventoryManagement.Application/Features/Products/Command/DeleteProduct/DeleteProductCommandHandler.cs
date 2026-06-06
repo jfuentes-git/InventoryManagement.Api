@@ -1,14 +1,10 @@
-﻿using Common.Interfaces.Products.Command;
+﻿
 using InventoryManagement.Application.Common.Exceptions;
+using InventoryManagement.Application.Common.Interfaces.Products.Command;
 using InventoryManagement.Application.Common.Models;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace InventoryManagement.Application.Features.FeaturesCatalog.Command.DeleteProduct
+namespace InventoryManagement.Application.Features.Products.Command.DeleteProduct
 {
     public sealed class DeleteProductCommandHandler
       : IRequestHandler<DeleteProductCommand, OperationResult>

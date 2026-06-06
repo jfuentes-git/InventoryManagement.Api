@@ -1,14 +1,11 @@
-﻿using InventoryManagement.Application.Features.Authentication.DTO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using InventoryManagement.Domain.Entities;
+
 
 namespace InventoryManagement.Application.Common.Interfaces.Authentication
 {
     public interface IAuthService
     {
-        Task<bool> ValidateCredentials(UsuarioDTO Usuario);
+       Task<bool> ValidateCredentials(User storedUser, string inputPassword);
     }
 }
