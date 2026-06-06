@@ -1,13 +1,9 @@
-﻿using Common.Interfaces.Products.Query;
+﻿
 using InventoryManagement.Application.Common.Exceptions;
+using InventoryManagement.Application.Common.Interfaces.Products.Queries;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace InventoryManagement.Application.Features.Product.Queries.GetProductById
+namespace InventoryManagement.Application.Features.Products.Queries.GetProductById
 {
     public sealed class GetProductByIdQueryHandler: IRequestHandler<GetProductByIdQuery, ProductDetailResponse>
     {

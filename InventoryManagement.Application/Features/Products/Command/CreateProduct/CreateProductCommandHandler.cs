@@ -1,24 +1,22 @@
-﻿using Common.Interfaces.Products.Command;
-using Common.Interfaces.Products.Query;
+﻿
 using InventoryManagement.Application.Common.Exceptions;
 using InventoryManagement.Application.Common.Interfaces.Categories.Queries;
+using InventoryManagement.Application.Common.Interfaces.Products.Command;
 using InventoryManagement.Application.Common.Models;
+using InventoryManagement.Domain.Entities;
 using MediatR;
 
 
-namespace InventoryManagement.Application.Features.FeaturesCatalog.Command.CreateProduct
+namespace InventoryManagement.Application.Features.Products.Command.CreateProduct
 {
     public sealed class CreateProductCommandHandler: IRequestHandler<CreateProductCommand, CreatedResponse>
     {
         private readonly IProductCommandRepository _repository;
         private readonly ICategoryQueryRepository _categoryQueryRepository;
-        private readonly IProductQueryRepository _productQueryRepository;
-        public CreateProductCommandHandler(IProductCommandRepository repository , ICategoryQueryRepository categoryQueryRepository
-            ,IProductQueryRepository productCommandRepository)
+        public CreateProductCommandHandler(IProductCommandRepository repository , ICategoryQueryRepository categoryQueryRepository)
         {
             _repository = repository;
             _categoryQueryRepository = categoryQueryRepository;
-            _productQueryRepository = productCommandRepository;
         }
         public async Task<CreatedResponse> Handle(CreateProductCommand request, CancellationToken cancellationToken)
         {
@@ -27,22 +25,14 @@ namespace InventoryManagement.Application.Features.FeaturesCatalog.Command.Creat
 
             if (category is null)
             {
-                throw new NotFoundException("La categoria no existe.");
+                throw new NotFoundException("La categoria no existe o se encuentra inactiva.");
             }
 
-            var existsProductName = await _productQueryRepository.ExistsByProductNameAsync(request.Name, cancellationToken);
-
-            if (existsProductName)
-            {
-                throw new ConflictException("Ya existe un producto con ese nombre.");
-            }
-
-            var product = new InventoryManagement.Domain.Entities.Product
+            var product = new Product
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
                 Price = request.Price,
-                Stock = 0,
                 CategoryId = request.CategoryId,
                 IsActive = true
             };

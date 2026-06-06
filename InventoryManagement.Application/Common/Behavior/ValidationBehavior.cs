@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 
-namespace InventoryManagement.Application.Common.Behaviors;
+namespace InventoryManagement.Application.Common.Behavior;
 
 public sealed class ValidationBehavior<TRequest, TResponse>: IPipelineBehavior<TRequest, TResponse>where TRequest : notnull
 {
@@ -21,10 +21,11 @@ public sealed class ValidationBehavior<TRequest, TResponse>: IPipelineBehavior<T
 
         var context = new ValidationContext<TRequest>(request);
 
-        var validationResults = await Task.WhenAll(_validators.Select(
-                validator => validator.ValidateAsync(
+        var validationResults = await Task.WhenAll(_validators.Select(validator => validator.ValidateAsync
+        (
                     context,
-                    cancellationToken)));
+                    cancellationToken
+        )));
 
         var failures = validationResults
             .SelectMany(result => result.Errors)

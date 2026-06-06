@@ -62,13 +62,14 @@ InventoryManagement
 │
 ├── docker-compose.yml
 │
+├── 01_InventoryManagement.Domain
+├── 02_InventoryManagement.Application
+├── 03_InventoryManagement.Infrastructure
 ├── 04_InventoryManagement.Api
 │   └── Dockerfile
 │
-├── 03_InventoryManagement.Infrastructure
-├── 02_InventoryManagement.Application
-├── 01_InventoryManagement.Domain
-└── InventoryManagement.UnitTests
+├── InventoryManagement.UnitTests
+└── InventoryManagement.IntegrationTests
 ```
 
 ---
@@ -155,9 +156,14 @@ Utilizar los datos de autenticación al dar click en el Boton Authorize:
 
 ---
 
-# Ejecutar Pruebas Unitarias
+# Ejecutar Pruebas Unitarias y de Integración.
 
-Ubicarse en la raíz de la solución y ejecutar:
+Ubicarse en cada proyecto que contiene tests.
+
+-InventoryManagement.UnitTests
+-InventoryManagement.IntegrationTests
+
+Ejecutar:
 
 ```bash
 dotnet test
@@ -271,6 +277,7 @@ docker compose start
 - ASP.NET Core Web API
 - Entity Framework Core
 - SQL Server
+- SQLite (Pruebas de Integración)
 - MediatR
 - CQRS
 - FluentValidation

@@ -1,7 +1,8 @@
-﻿using InventoryManagement.Domain.Entities;
-using System.Data;
+﻿
+using InventoryManagement.Domain.Entities;
 
-namespace   InventoryManagement.Application.Common.Interfaces.InventoryMovements.Queries
+
+namespace InventoryManagement.Application.Common.Interfaces.InventoryMovements.Queries
 {
     public interface IInventoryMovementQueryRepository
     {

@@ -1,6 +1,7 @@
-﻿using FluentValidation;
+﻿
+using FluentValidation;
 
-namespace InventoryManagement.Application.Features.FeaturesCatalog.Command.CreateProduct
+namespace InventoryManagement.Application.Features.Products.Command.CreateProduct
 {
     public sealed class CreateProductCommandValidator: AbstractValidator<CreateProductCommand>
     {

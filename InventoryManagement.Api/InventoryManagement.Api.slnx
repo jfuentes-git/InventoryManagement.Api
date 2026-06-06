@@ -3,11 +3,13 @@
     <File Path="../docker-compose.yml" />
     <File Path="../Dockerfile" />
     <File Path="../README.md" />
+    <File Path=".env" />
     <File Path=".env.example" />
   </Folder>
   <Project Path="../InventoryManagement.Application/02_InventoryManagement.Application.csproj" />
   <Project Path="../InventoryManagement.Domain/01_InventoryManagement.Domain.csproj" />
   <Project Path="../InventoryManagement.Infrastructure/03_InventoryManagement.Infrastructure.csproj" />
+  <Project Path="../InventoryManagement.IntegrationTests/InventoryManagement.IntegrationTests.csproj" />
   <Project Path="../InventoryManagement.UnitTests/InventoryManagement.UnitTests.csproj" />
   <Project Path="04_InventoryManagement.Api.csproj" />
 </Solution>

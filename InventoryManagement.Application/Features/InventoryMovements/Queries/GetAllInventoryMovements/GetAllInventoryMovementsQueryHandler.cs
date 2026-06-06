@@ -1,4 +1,5 @@
-﻿using InventoryManagement.Application.Common.Interfaces.InventoryMovements.Queries;
+﻿
+using InventoryManagement.Application.Common.Interfaces.InventoryMovements.Queries;
 using InventoryManagement.Application.Features.InventoryMovements.Queries.GetInventoryMovementByProductId;
 using MediatR;
 

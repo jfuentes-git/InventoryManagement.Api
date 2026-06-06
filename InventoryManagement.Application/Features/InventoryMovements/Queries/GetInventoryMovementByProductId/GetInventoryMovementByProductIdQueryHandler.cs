@@ -1,12 +1,7 @@
-﻿using InventoryManagement.Application.Common.Exceptions;
+﻿
 using InventoryManagement.Application.Common.Interfaces.InventoryMovements.Queries;
 using InventoryManagement.Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace InventoryManagement.Application.Features.InventoryMovements.Queries.GetInventoryMovementByProductId
 {

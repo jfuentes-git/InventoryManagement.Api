@@ -1,12 +1,9 @@
-﻿using InventoryManagement.Application.Common.Models;
+﻿
+using InventoryManagement.Application.Common.Models;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace InventoryManagement.Application.Features.FeaturesCatalog.Command.UpdateProduct
+
+namespace InventoryManagement.Application.Features.Products.Command.UpdateProduct
 {
     public sealed record UpdateProductCommand
    (

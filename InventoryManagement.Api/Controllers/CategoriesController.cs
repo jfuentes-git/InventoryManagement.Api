@@ -1,7 +1,7 @@
 ﻿using InventoryManagement.Application.Common.Models;
-using InventoryManagement.Application.Features.Categories.Commands.CreateCategory;
-using InventoryManagement.Application.Features.Categories.Commands.DeleteCategory;
-using InventoryManagement.Application.Features.Categories.Commands.UpdateCategory;
+using InventoryManagement.Application.Features.Categories.Command.CreateCategory;
+using InventoryManagement.Application.Features.Categories.Command.DeleteCategory;
+using InventoryManagement.Application.Features.Categories.Command.UpdateCategory;
 using InventoryManagement.Application.Features.Categories.Queries.GetAllCategories;
 using InventoryManagement.Application.Features.Categories.Queries.GetCategoryById;
 using MediatR;
@@ -31,6 +31,7 @@ public sealed class CategoriesController : ControllerBase
     /// </remarks>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetAllCategoriesQuery(), cancellationToken);
@@ -47,6 +48,7 @@ public sealed class CategoriesController : ControllerBase
     [HttpGet("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> GetById(Guid id, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new GetCategoryByIdQuery(id), cancellationToken);
@@ -62,8 +64,9 @@ public sealed class CategoriesController : ControllerBase
     /// </remarks>
     [HttpPost]
     [ProducesResponseType(typeof(CreatedResponse), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Create(
         [FromBody] CreateCategoryCommand command, CancellationToken cancellationToken)
     {
@@ -81,7 +84,7 @@ public sealed class CategoriesController : ControllerBase
     /// </remarks>
     [HttpPut]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Update(
         [FromBody] UpdateCategoryCommand command,

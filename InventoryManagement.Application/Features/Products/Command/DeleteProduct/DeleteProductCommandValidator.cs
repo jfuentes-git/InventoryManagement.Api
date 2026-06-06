@@ -1,12 +1,7 @@
-﻿using FluentValidation;
-using InventoryManagement.Application.Features.FeaturesCatalog.Command.DeleteProduct;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using FluentValidation;
 
-namespace InventoryManagement.Application.Features.Product.Command.DeleteProduct
+namespace InventoryManagement.Application.Features.Products.Command.DeleteProduct
 {
     public sealed class DeleteProductCommandValidator : AbstractValidator<DeleteProductCommand>
     {
